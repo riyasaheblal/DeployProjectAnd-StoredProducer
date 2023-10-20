@@ -1,0 +1,13 @@
+Deployement - 
+
+1. Create war file (Right cick - export - go on web(war file) - save it on desktop )
+2. Open win scp - new site - Enter (host name and password) - Login
+3. <root> - opt - Apache Tomcat 9.0.621 - web apps - drag your file from left sided location on screen - and drop that file into web apps
+4. refresh it
+5. open putty - enter (host name and password) it will be invisible
+6. press upper arrow (i-e it shows like (cd/opt/Apache Tomcat 9.0.621/bin)) enter 
+7. again press upper arrow (i-e it shows like (ps-ef/grep tomcat)) enter 
+8. again press upper arrow (i-e it shows like (./shutdown.sh)) enter
+9. o in web apps and refresh it ...check wether is there your file is uploaded or not
+10. if yes then go into putty session and pressypper arrow i-d ./start
+11. done.
