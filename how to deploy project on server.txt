@@ -1,0 +1,41 @@
+How to deploy the project in spring
+
+https://www.javatpoint.com/spring-boot-project-deployment-using-tomcat
+
+Step 1: Add the Spring Web dependency.
+step 2: Extends the SpringBootServletInitializer class in the main class.
+
+step 3: override
+ex.
+package com.javatpoint;  
+import org.springframework.boot.SpringApplication;  
+import org.springframework.boot.autoconfigure.SpringBootApplication;  
+import org.springframework.boot.builder.SpringApplicationBuilder;  
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;  
+@SpringBootApplication  
+public class SpringBootWarDeploymentExampleApplication extends SpringBootServletInitializer  
+{  
+@Override  
+protected SpringApplicationBuilder configure(SpringApplicationBuilder application)   
+{  
+return application.sources(SpringBootWarDeploymentExampleApplication.class);  
+}  
+public static void main(String[] args)   
+		SpringApplication.run(SpringBootWarDeploymentExampleApplication.class, args);  
+}  
+}  
+step 4: add dependency
+<dependency>  
+<groupId>org.springframework.boot</groupId>  
+<artifactId>spring-boot-starter-tomcat</artifactId>  
+<scope>provided</scope>  
+</dependency>
+step 5:<packaging>war</packaging> 
+step 6:
+<build>  
+<finalName>web-services</finalName>  
+step 7: Right-click on the project -> Run As -> 5 Maven Build
+step 8: Write clean install in the Goals label and check the Skip Tests. Click on the Apply and Run button, respectively.
+step 9:  Copy the path and access the target folder of the application
+step 10: open services by administrator 
+then restart the tomcat in which tomcat you uploaded that war file.

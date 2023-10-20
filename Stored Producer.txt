@@ -1,0 +1,146 @@
+///////////////////////////////////////create view///////////////////////////////////////
+
+create view book_info_v as 
+SELECT bk.title, bk.author, bk.publisher, ct.category, ln.language, ft.format_type
+                 FROM book bk left join book_category ct on bk.category_id = ct.id  
+                 left join language ln on bk.language_id = ln.id 
+                 left join format ft on bk.format_id = ft.id
+
+
+///////////////////////////////////////////create function///////////////////////////////////////////////
+
+create function write_message(
+in string varchar
+)
+returns varchar
+AS $$
+BEGIN
+    RETURN 'Hello ' || string || '! How are you? ';
+END;
+$$ LANGUAGE plpgsql;
+
+select * from write_message ('PP')
+
+////////////////////////////////////////////////////////////view call with function//////////////////////////////////
+
+select write_message ('PP'),* from book_info_v where title like '%Si%'
+
+            
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                 
+                 
+                 
+create or replace function book_info(
+in book_name varchar
+)
+returns table (title varchar, author varchar, publisher varchar, category varchar, lang varchar, format varchar)
+ AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT bk.title, bk.author, bk.publisher, ct.category, ln.language, ft.format_type
+                 FROM book bk left join book_category ct on bk.category_id = ct.id  
+                 left join language ln on bk.language_id = ln.id 
+                 left join format ft on bk.format_id = ft.id
+                 WHERE lower(bk.title) like '%' || lower(book_name) || '%';
+END;
+$$ LANGUAGE plpgsql;
+
+
+select * from book_info('mony')
+
+
+select * from book where publisher like '%Nu%'
+
+
+
+
+
+select * from book_category
+
+
+
+
+
+
+////////////////////////////////////taking string/////////////////////////////////////
+
+
+CREATE OR REPLACE FUNCTION movie_info(
+    IN movie_title varchar
+)
+RETURNS TABLE (
+    movie_name varchar,
+    movie_description varchar,
+    movie_releasedate date,
+    movie_rating int,
+    title varchar,
+    singer varchar,
+    movie_id int,
+    type_song varchar
+)
+AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT
+        mv.movie_name,
+        mv.movie_description,
+        mv.movie_releasedate,
+        mv.movie_rating,
+        sg.title,
+        sg.singer,
+        sg.movie_id,
+        st.type_song
+    FROM
+        movie mv
+    LEFT JOIN
+        songs sg ON mv.id = sg.movie_id
+    LEFT JOIN
+        song_type st ON st.id = sg.id
+    WHERE
+        lower(mv.movie_name) LIKE '%' || lower(movie_title) || '%';
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+select * from movie_info('Movie A')
+
+
+
+///////////////////////////////////taking int////////////////////////////////
+
+CREATE OR REPLACE FUNCTION get_movie_info_by_rating(movie_rate integer)
+RETURNS TABLE (
+    movie_name character varying(100),
+    movie_description character varying(255),
+    movie_releasedate date,
+    movie_rating integer,
+    title character varying(100),
+    singer character varying(100),
+    type_song character varying(50)
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        mv.movie_name,
+        mv.movie_description,
+        mv.movie_releasedate,
+        mv.movie_rating,
+        sg.title,
+        sg.singer,
+        st.type_song
+    FROM
+        movie mv
+    LEFT JOIN
+        songs sg ON mv.id = sg.movie_id
+    LEFT JOIN
+        song_type st ON st.id = sg.id
+    WHERE
+        mv.movie_rating = movie_rate;
+END;
+$$ LANGUAGE plpgsql;
+
+select * from movie
+
+
+SELECT * FROM get_movie_info_by_rating(4); -- Replace 7.5 with the desired movie rating
+
